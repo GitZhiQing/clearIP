@@ -21,7 +21,6 @@ def get_ip_info(ip: str):
     except ValueError:
         abort(400, description="Invalid IP address format")
 
-    # 使用 SQLAlchemy 2.0 的现代查询方式
     stmt = (
         select(IPData)
         .where(IPData.ip_start_num <= ip_num)
