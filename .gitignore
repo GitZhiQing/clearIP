@@ -10,9 +10,7 @@ data/*
 !data/.gitkeep
 
 # cache
-.uv_cache/
-.ruff_cache/
-.pytest_cache/
+**/*cache/
 
 # tmp
 tmp/
