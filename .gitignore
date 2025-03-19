@@ -10,7 +10,7 @@ data/*
 !data/.gitkeep
 
 # cache
-**/*cache/
+**/*cache*/
 
 # tmp
 tmp/
