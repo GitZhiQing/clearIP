@@ -44,7 +44,7 @@ flask initdb
 4. 运行
 
 > [!WARNING]
-> 若要将此应用暴露在公网，请确保关闭了 [Flask 调试模式](https://flask.palletsprojects.com/en/stable/debugging/)，且不要使用[开发服务器](https://flask.palletsprojects.com/en/stable/server/)。
+> 若要将此应用暴露在公网，请确保关闭了[调试模式](https://flask.palletsprojects.com/en/stable/debugging/)，且不要使用[开发服务器](https://flask.palletsprojects.com/en/stable/server/)。
 
 ```bash
 flask run # 此命令仅用于开发预览
