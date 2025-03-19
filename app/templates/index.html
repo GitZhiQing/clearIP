@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="{{ url_for('static', filename='js/tailwindcss.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Noto+Sans+SC&family=Roboto&family=Rajdhani&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.svg') }}"
+      type="image/x-icon" />
+    <title>IP 信息查询 | clearIP</title>
+  </head>
+  <body
+    class="h-full bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <button
+      onclick="toggleTheme()"
+      class="fixed top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg hover:shadow-xl w-10 h-10 transition-all duration-300 hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700"
+      aria-label="切换主题">
+      <div
+        class="w-6 h-6 bg-gray-600 dark:bg-emerald-400 rounded-full mx-auto transition-colors duration-300"></div>
+    </button>
+
+    <div class="min-h-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- 标题优化 -->
+      <header class="py-8 text-center">
+        <h1 class="text-emerald-300 dark:text-emerald-300">clearIP</h1>
+        <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm tracking-wide">
+          IP 信息查询服务
+        </p>
+      </header>
+
+      <main
+        class="bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-lg backdrop-blur-sm p-6 mb-8 border border-gray-200/50 dark:border-emerald-500/30 transition-all duration-300">
+        <!-- Loading 状态 -->
+        <div class="animate-pulse text-center mb-6" id="loading">
+          <div
+            class="text-gray-400 dark:text-emerald-400 text-sm tracking-wider">
+            ▸ 正在获取 IP 信息...
+          </div>
+        </div>
+
+        <!-- 结果展示 -->
+        <div class="hidden space-y-4" id="result">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              class="p-4 bg-gray-50/60 dark:bg-gray-700/60 rounded-xl border border-gray-200/50 dark:border-emerald-500/30 backdrop-blur-sm transition-colors duration-300">
+              <h3 class="text-xs text-gray-500 dark:text-emerald-400/80">
+                IP_ADDRESS
+              </h3>
+              <p
+                id="ip-value"
+                class="mt-2 text-gray-900 dark:text-green-300 text-lg">
+                127.0.0.1
+              </p>
+            </div>
+
+            <div
+              class="p-4 bg-gray-50/60 dark:bg-gray-700/60 rounded-xl border border-gray-200/50 dark:border-emerald-500/30 backdrop-blur-sm transition-colors duration-300">
+              <h3 class="text-xs text-gray-500 dark:text-emerald-400/80">
+                GEO_LOCATION
+              </h3>
+              <p
+                id="location"
+                class="mt-2 text-gray-900 dark:text-green-300 text-lg">
+                -
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            <div
+              class="p-4 bg-gray-50/60 dark:bg-gray-700/60 rounded-xl border border-gray-200/50 dark:border-emerald-500/30 backdrop-blur-sm transition-colors duration-300">
+              <h3 class="text-xs text-gray-500 dark:text-emerald-400/80">
+                NETWORK_RANGE
+              </h3>
+              <p
+                id="ip-range"
+                class="mt-2 text-gray-900 dark:text-green-300 text-lg">
+                -
+              </p>
+            </div>
+
+            <div
+              class="p-4 bg-gray-50/60 dark:bg-gray-700/60 rounded-xl border border-gray-200/50 dark:border-emerald-500/30 backdrop-blur-sm transition-colors duration-300">
+              <h3 class="text-xs text-gray-500 dark:text-emerald-400/80">
+                ISP_INFO
+              </h3>
+              <p
+                id="info"
+                class="mt-2 text-gray-900 dark:text-green-300 text-lg">
+                -
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="/api/ip/{{ ip_address }}"
+            class="underline pt-4 text-xs text-orange-400 dark:text-orange-300"
+            target="_blank"
+            >/api/ip/{{ ip_address }}</a
+          >
+        </div>
+
+        <!-- 错误提示 -->
+        <div
+          class="hidden p-4 bg-red-100/90 dark:bg-red-900/50 rounded-xl border border-red-200/50 dark:border-red-400/50 backdrop-blur-sm"
+          id="error">
+          <h3 class="text-xs text-red-600 dark:text-red-300 font-semibold">
+            ERROR
+          </h3>
+          <p
+            id="error-message"
+            class="mt-2 text-red-700 dark:text-red-200/90 text-sm"></p>
+        </div>
+      </main>
+
+      <footer
+        class="py-8 text-center text-sm text-gray-500 dark:text-gray-500/80">
+        <p class="leading-relaxed tracking-wide">
+          数据基于
+          <a
+            href="https://cz88.net/"
+            class="underline hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            target="_blank"
+            >CZ88</a
+          >，获取来源
+          <a
+            href="https://github.com/nmgliangwei/qqwry"
+            class="underline hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            target="_blank"
+            >qqwry</a
+          >，更新于 {{ env_vars.DATA_UPDATED_DATE }} | &copy;
+          2025-{{env_vars.TIME.year}}
+          <a
+            href="https://github.com/GitZhiQing/clearIP"
+            class="underline hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            target="_blank"
+            >clearIP</a
+          >
+        </p>
+      </footer>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const loading = document.getElementById("loading");
+        const result = document.getElementById("result");
+        const error = document.getElementById("error");
+
+        // 获取当前用户的 IP 地址
+        const userIP = "{{ ip_address }}";
+
+        fetch(`/api/ip/${userIP}`)
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((err) => {
+                throw new Error(err.description);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            loading.classList.add("hidden");
+
+            // 更新页面数据
+            document.getElementById("ip-value").textContent = data.ip;
+            document.getElementById("location").textContent = data.location;
+            document.getElementById("info").textContent = data.info;
+            document.getElementById(
+              "ip-range"
+            ).textContent = `${data.ip_range.start} - ${data.ip_range.end}`;
+
+            result.classList.remove("hidden");
+          })
+          .catch((err) => {
+            loading.classList.add("hidden");
+            error.querySelector("#error-message").textContent = err.message;
+            error.classList.remove("hidden");
+          });
+      });
+    </script>
+  </body>
+</html>

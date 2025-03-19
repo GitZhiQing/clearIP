@@ -1,0 +1,14 @@
+body {
+    font-family: Roboto, "Noto Sans SC", sans-serif;
+}
+
+header h1 {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 72px;
+}
+
+#result {
+    font-family: "JetBrains Mono", Roboto, "Noto Sans SC", monospace;
+}

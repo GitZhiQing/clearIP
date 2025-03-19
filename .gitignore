@@ -1,0 +1,21 @@
+# IDE
+.idea/
+.vscode/
+
+# venv
+.venv/
+
+# data
+data/*
+!data/.gitkeep
+
+# cache
+.uv_cache/
+.ruff_cache/
+.pytest_cache/
+
+# tmp
+tmp/
+
+# secrets
+.env
