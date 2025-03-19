@@ -52,5 +52,14 @@ flask run # 此命令仅用于开发预览
 
 ## 效果
 
+- 暗色
+
 ![dark-demo](./images/dark-demo.png)
+
+- 亮色
+
 ![light-demo](./images/light-demo.png)
+
+- API
+
+![api-demo](./images/api-demo.png)
